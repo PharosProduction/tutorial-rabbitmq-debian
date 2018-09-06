@@ -1,0 +1,8 @@
+---
+- name: install
+  hosts: instances
+
+  roles:
+    - base_setup
+    - rabbit-mq 
+  

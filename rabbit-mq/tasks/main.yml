@@ -1,0 +1,76 @@
+---
+# tasks file for rabbitmq setup
+
+- name: Install nessesary package
+  apt: 
+      name: apt-transport-https
+      state: present
+      update_cache: yes
+
+- name: Download esl-erlang package
+  get_url:
+    url: https://packages.erlang-solutions.com/erlang/esl-erlang/FLAVOUR_1_general/esl-erlang_21.0-1~debian~stretch_amd64.deb
+    dest: /home/ops/esl-erlang_21.0-1~debian~stretch_amd64.deb
+    owner: ops
+    group: ops
+    mode: 0755
+
+- name: Install esl-erlang
+  apt:
+    deb: /home/ops/esl-erlang_21.0-1~debian~stretch_amd64.deb
+
+- name: Download erlang solutions
+  get_url:
+    url: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+    dest: /home/ops/erlang-solutions_1.0_all.deb
+    owner: ops
+    group: ops
+    mode: 0755
+
+- name: Install erlang repository
+  apt:
+    deb: /home/ops/erlang-solutions_1.0_all.deb
+
+- name: Add an Apt signing key
+  apt_key:
+    url: https://packages.erlang-solutions.com/debian/erlang_solutions.asc
+    state: present
+
+- name: fix unmet dependencies
+  shell: apt-get -f install
+
+- name: Add rabbit repo
+  shell: echo "deb https://dl.bintray.com/rabbitmq/debian stretch main" | tee /etc/apt/sources.list.d/bintray.rabbitmq.list
+
+- name: add trusted key
+  shell: wget -O- https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc | apt-key add -
+
+- name: install rabbitmq
+  apt: 
+    name: rabbitmq-server
+    state: present
+    update_cache: yes
+
+- name: enable rabbitmq plugins
+  rabbitmq_plugin:
+    names: rabbitmq_management
+    state: enabled
+  notify:
+    - restart rabbitmq
+
+- name: add rabbitmq users ops
+  rabbitmq_user:
+    user: ops
+    password: superpassword
+    vhost: /
+    tags: administrator
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
+  
+# If it's not necessary use rabbitmq_exporter uncoment 
+# - name: remove default guest user
+#   rabbitmq_user: 
+#     user: guest
+#     state: absent

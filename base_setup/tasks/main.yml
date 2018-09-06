@@ -1,0 +1,26 @@
+---
+# tasks file for base_setup
+    - name: Base setup
+      apt: 
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      with_items:
+        - apt-transport-https
+        - vim
+        - curl
+        - whois
+        - telnet 
+        - smartmontools
+        - htop
+        - bash-completion 
+        - git
+        - strace
+        - screen
+        - ntpdate 
+        # - python-software-properties
+        - software-properties-common
+        - bzip2
+        - net-tools
+        - sudo
+        - ntp

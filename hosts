@@ -1,0 +1,8 @@
+[all:vars]
+ansible_sudo_pass=
+
+[azure]
+localhost ansible_connection=local ansible_python_interpreter="/usr/bin/env python"
+
+[instances]
+23.100.58.22 ansible_user=lesha  ansible_python_interpreter="/usr/bin/env python3"
