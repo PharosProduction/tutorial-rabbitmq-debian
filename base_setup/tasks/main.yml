@@ -18,7 +18,6 @@
         - strace
         - screen
         - ntpdate 
-        # - python-software-properties
         - software-properties-common
         - bzip2
         - net-tools

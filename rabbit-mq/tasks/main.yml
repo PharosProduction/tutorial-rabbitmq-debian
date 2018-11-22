@@ -10,26 +10,26 @@
 - name: Download esl-erlang package
   get_url:
     url: https://packages.erlang-solutions.com/erlang/esl-erlang/FLAVOUR_1_general/esl-erlang_21.0-1~debian~stretch_amd64.deb
-    dest: /home/ops/esl-erlang_21.0-1~debian~stretch_amd64.deb
-    owner: ops
-    group: ops
+    dest: /home/admin/esl-erlang_21.0-1~debian~stretch_amd64.deb
+    owner: admin
+    group: admin
     mode: 0755
 
 - name: Install esl-erlang
   apt:
-    deb: /home/ops/esl-erlang_21.0-1~debian~stretch_amd64.deb
+    deb: /home/admin/esl-erlang_21.0-1~debian~stretch_amd64.deb
 
 - name: Download erlang solutions
   get_url:
     url: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
-    dest: /home/ops/erlang-solutions_1.0_all.deb
-    owner: ops
-    group: ops
+    dest: /home/admin/erlang-solutions_1.0_all.deb
+    owner: admin
+    group: admin
     mode: 0755
 
 - name: Install erlang repository
   apt:
-    deb: /home/ops/erlang-solutions_1.0_all.deb
+    deb: /home/admin/erlang-solutions_1.0_all.deb
 
 - name: Add an Apt signing key
   apt_key:
@@ -58,9 +58,9 @@
   notify:
     - restart rabbitmq
 
-- name: add rabbitmq users ops
+- name: add rabbitmq users admin
   rabbitmq_user:
-    user: ops
+    user: admin
     password: superpassword
     vhost: /
     tags: administrator
